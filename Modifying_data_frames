@@ -106,4 +106,27 @@ df['total_earned'] = df.apply(total_earned, axis = 1)
 
 print df
 
+#rename columns
+
+import codecademylib
+import pandas as pd
+
+df = pd.read_csv('imdb.csv')
+
+# Rename columns here
+df.rename(columns={'name':'movie_title'}, inplace=True)
+print df
+
+#review
+
+import codecademylib
+import pandas as pd
+
+orders = pd.read_csv('shoefly.csv')
+mylambda = lambda x: 'animal' if x =='leather' else 'vegan'
+orders['shoe_source'] = orders.shoe_material.apply(mylambda)
+mylambda2 = lambda row: 'Dear Mr. {}'.format(row.last_name) if row.gender == 'male' else 'Dear Ms. {}'.format(row.last_name)
+orders['salutation'] = orders.apply(mylambda2, axis = 1)
+print orders.head(5)
+
 
