@@ -68,3 +68,26 @@ print orders_products
 
 
 #merge on specific columns II
+
+#mismatched merge
+import codecademylib
+import pandas as pd
+
+orders = pd.read_csv('orders.csv')
+products = pd.read_csv('products.csv')
+print orders
+print products
+merged_df = pd.merge(orders, products)
+print(merged_df)
+
+#outer merge
+
+import codecademylib
+import pandas as pd
+
+store_a = pd.read_csv('store_a.csv')
+print store_a
+store_b = pd.read_csv('store_b.csv')
+print store_b
+store_a_b_outer = pd.merge(store_a, store_b, how='outer')
+print store_a_b_outer
