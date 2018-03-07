@@ -1,1 +1,37 @@
+import codecademylib
+import pandas as pd
 
+ad_clicks = pd.read_csv('ad_clicks.csv')
+#count the clicks for each source
+views = ad_clicks.groupby('utm_source').count().reset_index()
+# add a column where if it was clicked it is true and not is false
+ad_clicks['is_click'] =~ ad_clicks.ad_click_timestamp.isnull()
+#group the number of clicks per each group based on source and whether or not they were clicked
+clicks_by_source = ad_clicks.groupby(['utm_source', 'is_click']).user_id.count().reset_index()
+#display in a pivot table the true and false for each source
+clicks_pivot = clicks_by_source.pivot(columns='is_click', index='utm_source', values='user_id').reset_index()
+#add a percentage column
+clicks_pivot['percent_clicked'] = (clicks_pivot[True]/(clicks_pivot[True]+clicks_pivot[False])) *100
+#count the number of people who were shown ad A and ad B based on the source
+experimental_count = ad_clicks.groupby( 'experimental_group').user_id.count().reset_index()
+experimental_clicks = ad_clicks.groupby( ['experimental_group', 'is_click']).user_id.count().reset_index()
+#show the number of people who saw each ad based on source
+ex_click_percent = experimental_clicks.user_id.values[0] 
+ex_click_percent1 = experimental_count.user_id.values[0]
+a_clicks = ad_clicks[ad_clicks.experimental_group == 'A']
+a_clicks_day = a_clicks.groupby(['is_click', 'day']).user_id.count().reset_index()
+a_clicks_pivot = a_clicks_day.pivot(columns='is_click', index='day', values='user_id').reset_index()
+a_clicks_pivot['percent_clicked'] = (a_clicks_pivot[True]/(a_clicks_pivot[True]+a_clicks_pivot[False])) *100
+b_clicks = ad_clicks[ad_clicks.experimental_group == 'B']
+b_clicks_day = b_clicks.groupby(['is_click', 'day']).user_id.count().reset_index()
+b_clicks_pivot = b_clicks_day.pivot(columns='is_click', index='day', values='user_id').reset_index()
+b_clicks_pivot['percent_clicked'] = (b_clicks_pivot[True]/(b_clicks_pivot[True]+b_clicks_pivot[False])) *100
+#print(ad_clicks.head())
+#print clicks_pivot
+#print experimental_count
+#print experimental_clicks
+#print(type(ex_click_percent))
+#print ex_click_percent1
+#print clicks_day
+print a_clicks_pivot
+print b_clicks_pivot
