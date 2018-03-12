@@ -1,0 +1,19 @@
+import codecademylib
+import numpy as np
+calorie_stats = np.genfromtxt('cereal.csv', delimiter=",")
+#print calorie_stats
+average_calories = np.mean(calorie_stats)
+#print average_calories
+calorie_stats_sorted = np.sort(calorie_stats)
+#print calorie_stats_sorted
+calories_median = np.median(calorie_stats)
+#print calories_median
+nth_percentile = np.percentile(calorie_stats, 4)
+#print nth_percentile
+more_than_avg = calorie_stats[calorie_stats>average_calories]
+more_calories = (len(more_than_avg)/float(len(calorie_stats))) *100
+print len(more_than_avg)
+print type(average_calories)
+print more_calories
+calorie_std = np.std(calorie_stats)
+print round(calorie_std,3)
