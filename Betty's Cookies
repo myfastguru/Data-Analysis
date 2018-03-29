@@ -1,0 +1,15 @@
+import numpy as np
+cupcakes = np.array([2, 0.75, 2, 1, 0.5])
+recipes = np.genfromtxt('recipes.csv', delimiter=',')
+print recipes
+eggs = recipes[:,2]
+#print eggs
+one_egg = eggs[(eggs==1)]
+print one_egg
+cookies = recipes[2,:]
+print cupcakes
+double_batch = np.array(cupcakes) * 2
+print double_batch
+grocery_list = np.array(cookies) + np.array(double_batch)
+print grocery_list
+
