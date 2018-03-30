@@ -1,0 +1,45 @@
+import numpy as np
+import fetchmaker
+from scipy.stats import binom_test
+from scipy.stats import f_oneway
+from scipy.stats import chi2_contingency
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
+rottweiler_tl = fetchmaker.get_tail_length('rottweiler')
+rottweiler_tl_mean = np.mean(rottweiler_tl)
+rottweiler_tl_std = np.std(rottweiler_tl)
+print "The average length of a rottweiler tail is " + str(rottweiler_tl_mean) + " and the standard deviation is " + str(rottweiler_tl_std)
+#determine the number of whippets and the number of whippets that were rescued
+whippet_rescue = fetchmaker.get_is_rescue('whippet')
+num_whippet_rescues = np.count_nonzero(whippet_rescue)
+num_whippets = np.size(whippet_rescue)
+print 'The number of whippets rescued is ' +  str(num_whippet_rescues) + ' out of ' + str(num_whippets) + ' total.'
+# binomial test
+pval = binom_test(num_whippet_rescues, n=num_whippets, p=0.08)
+print pval
+if pval < 0.05:
+  print 'The result is significant'
+else:
+  print 'The result is not signficant'
+# ANOVA test to determine the difference in the weights of the three breeds
+whippet_weights = fetchmaker.get_weight('whippet')
+terrier_weights = fetchmaker.get_weight('terrier')
+pitbull_weights = fetchmaker.get_weight('pitbull')
+fstat, three_pval = f_oneway(whippet_weights, terrier_weights, pitbull_weights)
+print three_pval
+if three_pval < 0.05:
+  print 'The result is significant'
+else:
+  print 'The result is not signficant'
+# Using our data from ANOVA, we create v and l
+v = np.concatenate([whippet_weights, terrier_weights, pitbull_weights])
+labels = ['Whippet Weights'] * len(whippet_weights) + ['Terrier Weights'] * len(terrier_weights) + ['Pitbull Weights'] * len(pitbull_weights)
+tukey_results = pairwise_tukeyhsd(v, labels, 0.05)
+print tukey_results
+#get colors from poodle and shihtzu
+poodle_colors = fetchmaker.get_color('poodle')
+shihtzu_colors = fetchmaker.get_color('shihtzu')
+#color chart
+color_table =[[np.count_nonzero(poodle_colors=="black"),np.count_nonzero(shihtzu_colors=="black")], [np.count_nonzero(poodle_colors=="brown"),np.count_nonzero(shihtzu_colors=="brown")], [np.count_nonzero(poodle_colors=="gold"),np.count_nonzero(shihtzu_colors=="gold")], [np.count_nonzero(poodle_colors=="grey"),np.count_nonzero(shihtzu_colors=="grey")], [np.count_nonzero(poodle_colors=="white"),np.count_nonzero(shihtzu_colors=="white")]]
+print color_table
+chi2, color_pval, dof, expected = chi2_contingency(color_table)
+print color_pval
