@@ -1,0 +1,32 @@
+from scipy.stats import ttest_1samp
+from scipy.stats import ttest_ind
+from scipy.stats import chi2_contingency
+import familiar
+vein_pack_lifespans = familiar.lifespans(package='vein')
+tset, vein_pack_test = ttest_1samp(vein_pack_lifespans, 71)
+print vein_pack_test
+if vein_pack_test < 0.05:
+  print 'The vein pack is proven to make you live longer!'
+else:
+  print 'The vein pack is probably good for you somehow!'
+artery_pack_lifespans = familiar.lifespans(package='artery')
+tset, artery_pack_test = ttest_1samp(vein_pack_lifespans, 71)
+print artery_pack_test
+if artery_pack_test < 0.05:
+  print 'The artery pack is proven to make you live longer!'
+else:
+  print 'The artery pack is probably good for you somehow!'
+  
+tstatistic, package_comparison_results = ttest_ind(vein_pack_lifespans, artery_pack_lifespans)
+print package_comparison_results
+if package_comparison_results < 0.05:
+  print 'The artery pack guarantees even stronger results!'
+else:
+  print 'The artery pack is also a great product!'
+iron_contingency_table = familiar.iron_counts_for_package()
+chi2, iron_pval, dof, expected = chi2_contingency(iron_contingency_table)
+print iron_pval
+if iron_pval < 0.05:
+  print 'The artery pack is proven to make you healthier!'
+else:
+  print 'While We Cannot Say The Artery Package Will Help You, I Bet It is Nice!'
