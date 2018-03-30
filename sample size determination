@@ -1,0 +1,10 @@
+#determining lift
+
+# 100 * (Final - Initial) / Initial
+lift_eight_percent_to_twelve_percent = 100 * (12 - 8) / 8.
+print lift_eight_percent_to_twelve_percent
+
+# Initial + Initial * Percent Increase
+ten_percent_up_fifty_percent = (10) + (10 * 0.50)
+print ten_percent_up_fifty_percent
+
